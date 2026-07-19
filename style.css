@@ -1,8 +1,3 @@
-/* ==========================================================
-   FEEDBACK FORM STYLES
-   Clean card with a navy blue border frame.
-   Rating kept as simple pill-style buttons.
-   ========================================================== */
 
 :root {
   --color-primary: #0f3d63;       /* navy blue */
@@ -379,4 +374,85 @@ textarea.invalid:focus {
   .card {
     padding: 38px;
   }
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-card-bg);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(15, 61, 99, 0.15);
+  transition: transform var(--transition), background-color var(--transition);
+  z-index: 10;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.08);
+}
+
+/* ==========================================================
+   DARK MODE
+   Applied when the <body> has the "dark-mode" class,
+   which is toggled by JavaScript.
+   ========================================================== */
+body.dark-mode {
+  --color-primary: #4d9de0;
+  --color-primary-dark: #7cb8e8;
+  --color-primary-light: #1c3348;
+  --color-bg: #0f1420;
+  --color-card-bg: #1a2233;
+  --color-text: #e5e7eb;
+  --color-text-muted: #9ca3af;
+  --color-border: #303a4f;
+
+  background: linear-gradient(180deg, #0f1420 0%, #0b0f19 100%);
+}
+
+body.dark-mode .card {
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode select,
+body.dark-mode textarea {
+  background-color: #232c40;
+  color: var(--color-text);
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+  background-color: #232c40;
+}
+
+body.dark-mode .radio-label {
+  background-color: #232c40;
+}
+
+body.dark-mode .posts-list li {
+  background-color: #232c40;
+}
+
+body.dark-mode .form-status.success {
+  background-color: #0d2c1c;
+  border-color: #1f5c3c;
+}
+
+body.dark-mode .form-status.error {
+  background-color: #3a1414;
+  border-color: #6b2626;
+}
+
+body.dark-mode .theme-toggle {
+  background-color: #1a2233;
 }
