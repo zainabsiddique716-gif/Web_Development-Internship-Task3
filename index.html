@@ -5,33 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback Form</title>
 
-  <!-- Link to our external CSS file -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Main wrapper that holds everything on the page -->
   <main class="page">
 
-    <!-- ============================================= -->
-    <!-- SECTION 1: The Feedback Form                   -->
-    <!-- ============================================= -->
     <section class="card">
       <h1>Feedback Form</h1>
       <p class="subtitle">We would love to hear your thoughts.</p>
 
-      <!-- This box shows the final success/error message after submission.
-           It is empty at first and filled in by JavaScript. -->
       <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
 
-      <!-- novalidate = we turn OFF the browser's built-in validation
-           because we are doing ALL validation ourselves in JavaScript -->
       <form id="feedbackForm" novalidate>
 
         <!-- ---------- Full Name Field ---------- -->
         <div class="form-group">
-          <!-- "for" on the label must match the "id" on the input.
-               This is what makes the form accessible (screen readers, click-to-focus). -->
           <label for="fullName">Full Name <span class="required">*</span></label>
           <input
             type="text"
@@ -67,10 +56,6 @@
           <span class="error-message" id="categoryError"></span>
         </div>
 
-        <!-- ---------- Rating Radio Buttons ---------- -->
-        <!-- We use <fieldset> + <legend> instead of a plain <div> + label
-             because this is a GROUP of related radio buttons.
-             This is the correct semantic HTML for grouped inputs. -->
         <fieldset class="form-group">
           <legend>Rating <span class="required">*</span></legend>
 
@@ -104,8 +89,6 @@
             placeholder="Write your feedback here (10 to 500 characters)..."
           ></textarea>
 
-          <!-- This row holds the error message on the left
-               and the live character counter on the right -->
           <div class="textarea-footer">
             <span class="error-message" id="messageError"></span>
             <span class="char-counter" id="messageCounter">0/500</span>
@@ -116,32 +99,31 @@
         <button type="submit" id="submitBtn" class="submit-btn">
           <!-- Normal button text -->
           <span id="submitBtnText">Submit Feedback</span>
-          <!-- Small spinner, hidden by default, shown only while loading -->
           <span id="spinner" class="spinner hidden"></span>
         </button>
 
       </form>
     </section>
 
-    <!-- ============================================= -->
-    <!-- SECTION 2: Recent Submissions (Bonus Feature)  -->
-    <!-- ============================================= -->
-    <!-- This list shows the LAST 5 REAL submissions made by users on this
-         browser. It is built using localStorage, so it updates live every
-         time someone successfully submits the form. -->
     <section class="card">
       <h2>Recent Submissions</h2>
       <p class="subtitle small">Showing the last 5 feedback entries submitted from this browser.</p>
 
-      <!-- JavaScript will fill this list. If nothing has been submitted
-           yet, we show a friendly empty-state message instead. -->
       <ul id="postsList" class="posts-list"></ul>
     </section>
+    
+    <section class="card">
+      <h2>Sample Posts (API Feed)</h2>
+      <p class="subtitle small">Demo data fetched live from the JSONPlaceholder API using a GET request.</p>
 
+      <button id="loadPostsBtn" class="submit-btn" type="button" style="margin-bottom: 16px;">
+        Load Latest Posts
+      </button>
+
+      <ul id="apiPostsList" class="posts-list"></ul>
+    </section>
   </main>
 
-  <!-- Our JavaScript file is linked at the end of the body so that
-       the HTML elements above already exist by the time the script runs -->
   <script src="script.js"></script>
 </body>
 </html>
