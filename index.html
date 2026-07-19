@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback Form</title>
+
+  <!-- Link to our external CSS file -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Main wrapper that holds everything on the page -->
+  <main class="page">
+
+    <!-- ============================================= -->
+    <!-- SECTION 1: The Feedback Form                   -->
+    <!-- ============================================= -->
+    <section class="card">
+      <h1>Feedback Form</h1>
+      <p class="subtitle">We would love to hear your thoughts.</p>
+
+      <!-- This box shows the final success/error message after submission.
+           It is empty at first and filled in by JavaScript. -->
+      <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+
+      <!-- novalidate = we turn OFF the browser's built-in validation
+           because we are doing ALL validation ourselves in JavaScript -->
+      <form id="feedbackForm" novalidate>
+
+        <!-- ---------- Full Name Field ---------- -->
+        <div class="form-group">
+          <!-- "for" on the label must match the "id" on the input.
+               This is what makes the form accessible (screen readers, click-to-focus). -->
+          <label for="fullName">Full Name <span class="required">*</span></label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            placeholder="e.g. Zainab Siddique"
+          >
+          <!-- Empty span where we will insert an error message via JS -->
+          <span class="error-message" id="fullNameError"></span>
+        </div>
+
+        <!-- ---------- Email Field ---------- -->
+        <div class="form-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="e.g. zainab@example.com"
+          >
+          <span class="error-message" id="emailError"></span>
+        </div>
+
+        <!-- ---------- Category Dropdown ---------- -->
+        <div class="form-group">
+          <label for="category">Category <span class="required">*</span></label>
+          <select id="category" name="category">
+            <option value="">-- Select a category --</option>
+            <option value="General">General</option>
+            <option value="Bug Report">Bug Report</option>
+            <option value="Suggestion">Suggestion</option>
+          </select>
+          <span class="error-message" id="categoryError"></span>
+        </div>
+
+        <!-- ---------- Rating Radio Buttons ---------- -->
+        <!-- We use <fieldset> + <legend> instead of a plain <div> + label
+             because this is a GROUP of related radio buttons.
+             This is the correct semantic HTML for grouped inputs. -->
+        <fieldset class="form-group">
+          <legend>Rating <span class="required">*</span></legend>
+
+          <div class="rating-group">
+            <label class="radio-label" for="rating1">
+              <input type="radio" id="rating1" name="rating" value="1"> 1
+            </label>
+            <label class="radio-label" for="rating2">
+              <input type="radio" id="rating2" name="rating" value="2"> 2
+            </label>
+            <label class="radio-label" for="rating3">
+              <input type="radio" id="rating3" name="rating" value="3"> 3
+            </label>
+            <label class="radio-label" for="rating4">
+              <input type="radio" id="rating4" name="rating" value="4"> 4
+            </label>
+            <label class="radio-label" for="rating5">
+              <input type="radio" id="rating5" name="rating" value="5"> 5
+            </label>
+          </div>
+          <span class="error-message" id="ratingError"></span>
+        </fieldset>
+
+        <!-- ---------- Message Textarea ---------- -->
+        <div class="form-group">
+          <label for="message">Message <span class="required">*</span></label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            placeholder="Write your feedback here (10 to 500 characters)..."
+          ></textarea>
+
+          <!-- This row holds the error message on the left
+               and the live character counter on the right -->
+          <div class="textarea-footer">
+            <span class="error-message" id="messageError"></span>
+            <span class="char-counter" id="messageCounter">0/500</span>
+          </div>
+        </div>
+
+        <!-- ---------- Submit Button ---------- -->
+        <button type="submit" id="submitBtn" class="submit-btn">
+          <!-- Normal button text -->
+          <span id="submitBtnText">Submit Feedback</span>
+          <!-- Small spinner, hidden by default, shown only while loading -->
+          <span id="spinner" class="spinner hidden"></span>
+        </button>
+
+      </form>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- SECTION 2: Recent Submissions (Bonus Feature)  -->
+    <!-- ============================================= -->
+    <!-- This list shows the LAST 5 REAL submissions made by users on this
+         browser. It is built using localStorage, so it updates live every
+         time someone successfully submits the form. -->
+    <section class="card">
+      <h2>Recent Submissions</h2>
+      <p class="subtitle small">Showing the last 5 feedback entries submitted from this browser.</p>
+
+      <!-- JavaScript will fill this list. If nothing has been submitted
+           yet, we show a friendly empty-state message instead. -->
+      <ul id="postsList" class="posts-list"></ul>
+    </section>
+
+  </main>
+
+  <!-- Our JavaScript file is linked at the end of the body so that
+       the HTML elements above already exist by the time the script runs -->
+  <script src="script.js"></script>
+</body>
+</html>
