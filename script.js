@@ -468,3 +468,44 @@ function renderApiPosts(posts) {
 // Load the posts automatically when the page first opens
 loadPostsBtn.addEventListener("click", loadLatestPosts);
 document.addEventListener("DOMContentLoaded", loadLatestPosts);
+
+
+const THEME_STORAGE_KEY = "feedbackFormTheme";
+const themeToggleBtn = document.getElementById("themeToggle");
+
+/**
+ * Applies the given theme ("light" or "dark") to the page
+ * and updates the toggle button's icon.
+ */
+function applyTheme(theme) {
+  if (theme === "dark") {
+    document.body.classList.add("dark-mode");
+    themeToggleBtn.textContent = "☀️"; // show a sun icon to switch back to light
+  } else {
+    document.body.classList.remove("dark-mode");
+    themeToggleBtn.textContent = "🌙"; // show a moon icon to switch to dark
+  }
+}
+
+/**
+ * Reads the saved theme from localStorage (defaults to "light"
+ * if nothing has been saved yet) and applies it on page load.
+ */
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "light";
+  applyTheme(savedTheme);
+}
+
+/**
+ * Toggles between light and dark mode when the button is clicked,
+ * and saves the new choice to localStorage.
+ */
+themeToggleBtn.addEventListener("click", function () {
+  const isDarkMode = document.body.classList.contains("dark-mode");
+  const newTheme = isDarkMode ? "light" : "dark";
+  applyTheme(newTheme);
+  localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+});
+
+// Apply the saved theme as soon as the page loads
+loadSavedTheme();
