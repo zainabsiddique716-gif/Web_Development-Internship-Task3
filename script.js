@@ -1,26 +1,7 @@
-/* ==========================================================
-   FEEDBACK FORM — script.js
-
-   This file is organized into clear sections:
-   1. Constants
-   2. DOM references
-   3. Validation functions (one per field)
-   4. Helper functions (show/hide errors, loading state, etc.)
-   5. Character counter
-   6. Form submit handler (validation + fetch POST)
-   7. Recent Submissions list (localStorage, bonus feature)
-
-   Kept deliberately simple — no frameworks, no fancy tricks —
-   so every line can be explained easily in a viva.
-   ========================================================== */
-
-
-/* ----------------------------------------------------------
-   1. CONSTANTS
+/*   1. CONSTANTS
    Values that never change while the app is running.
    Writing them here means we don't repeat the same numbers
-   in multiple places in the code.
-   ---------------------------------------------------------- */
+   in multiple places in the code. */
 const API_URL = "https://jsonplaceholder.typicode.com/posts";
 const MAX_MESSAGE_LENGTH = 500;
 const MIN_MESSAGE_LENGTH = 10;
@@ -35,13 +16,6 @@ const STORAGE_KEY = "recentFeedbackSubmissions";
 // We only want to keep and display the last 5 submissions
 const MAX_STORED_SUBMISSIONS = 5;
 
-
-/* ----------------------------------------------------------
-   2. DOM REFERENCES
-   Grabbing all the HTML elements we will need to work with,
-   once, at the top of the file — instead of calling
-   document.getElementById() again and again everywhere.
-   ---------------------------------------------------------- */
 const form = document.getElementById("feedbackForm");
 const fullNameInput = document.getElementById("fullName");
 const emailInput = document.getElementById("email");
@@ -57,13 +31,11 @@ const messageCounter = document.getElementById("messageCounter");
 const postsList = document.getElementById("postsList");
 
 
-/* ----------------------------------------------------------
-   3. VALIDATION FUNCTIONS
+/* 3. VALIDATION FUNCTIONS
    Each function checks ONE field and returns:
      - an error message (string) if the value is invalid
      - an empty string "" if the value is valid
-   Keeping them separate makes the code easy to read and test.
-   ---------------------------------------------------------- */
+   Keeping them separate makes the code easy to read and test.*/
 
 function validateFullName(value) {
   const trimmed = value.trim(); // remove extra spaces from both ends
@@ -187,10 +159,6 @@ function setLoadingState(isLoading) {
 }
 
 
-/* ----------------------------------------------------------
-   5. CHARACTER COUNTER (Bonus Feature)
-   Updates live every time the user types in the message box.
-   ---------------------------------------------------------- */
 messageInput.addEventListener("input", function () {
   const currentLength = messageInput.value.length;
   messageCounter.textContent = currentLength + "/" + MAX_MESSAGE_LENGTH;
@@ -200,11 +168,7 @@ messageInput.addEventListener("input", function () {
 });
 
 
-/* ----------------------------------------------------------
-   Runs all 5 validation functions together.
-   Shows/hides every error message.
-   Returns whether the whole form is valid, plus the collected data.
-   ---------------------------------------------------------- */
+/* Runs all 5 validation functions together. */
 function validateForm() {
   const nameValue = fullNameInput.value;
   const emailValue = emailInput.value;
@@ -444,3 +408,63 @@ function renderSubmissionsList() {
 // Render the list immediately when the page first loads,
 // so any submissions from previous visits are shown right away.
 renderSubmissionsList();
+
+/* ----------------------------------------------------------
+   8. SAMPLE POSTS FROM API (GET Request — Bonus Requirement)
+
+   This section fetches the latest 5 posts from JSONPlaceholder
+   using a GET request and displays them. This is separate from
+   "Recent Submissions" above (which shows the user's own real
+   data via localStorage). This section exists specifically to
+   demonstrate the GET + fetch + display requirement using the API.
+   ---------------------------------------------------------- */
+
+const loadPostsBtn = document.getElementById("loadPostsBtn");
+const apiPostsList = document.getElementById("apiPostsList");
+
+async function loadLatestPosts() {
+  loadPostsBtn.disabled = true;
+  loadPostsBtn.textContent = "Loading...";
+  apiPostsList.innerHTML = "";
+
+  try {
+    // GET request — fetch the latest 5 posts from the API
+    const response = await fetch(API_URL + "?_limit=5");
+
+    // Same rule applies here: fetch() does not throw on error status
+    // codes, so we must check response.ok manually.
+    if (!response.ok) {
+      throw new Error("Server responded with status " + response.status);
+    }
+
+    const posts = await response.json();
+    renderApiPosts(posts);
+
+  } catch (error) {
+    apiPostsList.innerHTML = '<li class="empty-state">Failed to load posts. Please try again.</li>';
+    console.error("Fetch posts error:", error);
+
+  } finally {
+    loadPostsBtn.disabled = false;
+    loadPostsBtn.textContent = "Load Latest Posts";
+  }
+}
+
+/**
+ * Renders the posts returned by the API into the apiPostsList element.
+ */
+function renderApiPosts(posts) {
+  apiPostsList.innerHTML = "";
+
+  posts.forEach(function (post) {
+    const listItem = document.createElement("li");
+    listItem.innerHTML =
+      "<strong>#" + post.id + " — " + escapeHTML(post.title) + "</strong>" +
+      escapeHTML(post.body);
+    apiPostsList.appendChild(listItem);
+  });
+}
+
+// Load the posts automatically when the page first opens
+loadPostsBtn.addEventListener("click", loadLatestPosts);
+document.addEventListener("DOMContentLoaded", loadLatestPosts);
